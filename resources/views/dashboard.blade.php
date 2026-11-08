@@ -1,0 +1,336 @@
+<x-app-layout title="Dashboard">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <!-- Welcome Banner -->
+        <div class="relative overflow-hidden rounded-2xl border border-emerald-500/20 bg-gradient-to-r from-emerald-950/60 via-slate-900 to-slate-900 p-6 sm:p-8 shadow-xl">
+            <div class="max-w-2xl relative z-10">
+                <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500 text-slate-950/10 text-emerald-400 border border-emerald-500/20 mb-3">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Authenticated Session Active
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-emerald-400 font-mono">
+                    Welcome back, {{ Auth::user()->name }}!
+                </h1>
+                <p class="text-sm text-emerald-400/60 font-mono text-xs mt-2 leading-relaxed">
+                    You have securely authenticated into {{ config('app.name', 'Laravel') }}. This application is equipped with OWASP-hardened session security, 2FA TOTP authentication, and a modular layout designed for adding pages easily.
+                </p>
+            </div>
+        </div>
+
+        <!-- Quick Stats & Metrics -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-[#11181c]/80 border border-emerald-500/20 rounded-2xl p-5 backdrop-blur-sm shadow-md">
+                <div class="flex items-center justify-between text-xs text-emerald-400/60 font-mono text-xs font-medium">
+                    <span>Active Modules</span>
+                    <span class="px-2 py-0.5 rounded-full bg-emerald-500 text-slate-950/10 text-emerald-400 border border-emerald-500/20 font-mono">3 Built-in</span>
+                </div>
+                <div class="mt-2 text-2xl font-bold text-white">Application</div>
+                <p class="mt-1 text-xs text-slate-500">Dashboard &bull; Profile &bull; 2FA</p>
+            </div>
+
+            <div class="bg-[#11181c]/80 border border-emerald-500/20 rounded-2xl p-5 backdrop-blur-sm shadow-md">
+                <div class="flex items-center justify-between text-xs text-emerald-400/60 font-mono text-xs font-medium">
+                    <span>Two-Factor Auth</span>
+                    @if (! empty(Auth::user()->two_factor_confirmed_at))
+                        <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">&check; Active</span>
+                    @else
+                        <span class="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold">Not Set</span>
+                    @endif
+                </div>
+                <div class="mt-2 text-2xl font-bold text-white">TOTP Security</div>
+                <p class="mt-1 text-xs text-slate-500">Google Auth &bull; 1Password</p>
+            </div>
+
+            <div class="bg-[#11181c]/80 border border-emerald-500/20 rounded-2xl p-5 backdrop-blur-sm shadow-md">
+                <div class="flex items-center justify-between text-xs text-emerald-400/60 font-mono text-xs font-medium">
+                    <span>Email Verification</span>
+                    @if (Auth::user()->email_verified_at)
+                        <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">&check; Verified</span>
+                    @else
+                        <span class="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold">Pending</span>
+                    @endif
+                </div>
+                <div class="mt-2 text-2xl font-bold text-white">Identity</div>
+                <p class="mt-1 text-xs text-slate-500">{{ Auth::user()->email }}</p>
+            </div>
+
+            <div class="bg-[#11181c]/80 border border-emerald-500/20 rounded-2xl p-5 backdrop-blur-sm shadow-md">
+                <div class="flex items-center justify-between text-xs text-emerald-400/60 font-mono text-xs font-medium">
+                    <span>Session Defense</span>
+                    <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">Protected</span>
+                </div>
+                <div class="mt-2 text-2xl font-bold text-white">CSRF & Guard</div>
+                <p class="mt-1 text-xs text-slate-500">HTTP-Only Cookie Sessions</p>
+            </div>
+        </div>
+
+        <!-- Application Pages & Modules (Quick Navigation Grid) -->
+        <div class="space-y-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-white">Application Pages & Modules</h2>
+                    <p class="text-xs text-emerald-400/60 font-mono text-xs">Navigate between active features or easily create your own modules.</p>
+                </div>
+                <a href="#quickstart-guide" class="text-xs font-semibold text-emerald-400 hover:text-emerald-300 font-mono">
+                    + How to Add Pages &rarr;
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Profile Settings -->
+                <div class="group bg-slate-900/60 hover:bg-[#11181c] border border-emerald-500/20 hover:border-slate-700 rounded-2xl p-5 backdrop-blur-sm transition-all flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-600 text-slate-950/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-sm font-bold text-white">User Profile</h3>
+                        <p class="text-xs text-emerald-400/60 font-mono text-xs leading-relaxed">
+                            Manage your personal credentials, name, email verification, and password.
+                        </p>
+                    </div>
+                    <div class="pt-4 mt-2 border-t border-slate-800/80/80">
+                        <a href="{{ route('profile.edit') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 group-hover:text-emerald-300">
+                            Edit Profile &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 2FA Security -->
+                <div class="group bg-slate-900/60 hover:bg-[#11181c] border border-emerald-500/20 hover:border-slate-700 rounded-2xl p-5 backdrop-blur-sm transition-all flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-sm font-bold text-white">2FA Security</h3>
+                        <p class="text-xs text-emerald-400/60 font-mono text-xs leading-relaxed">
+                            Configure Two-Factor TOTP authentication and backup emergency recovery codes.
+                        </p>
+                    </div>
+                    <div class="pt-4 mt-2 border-t border-slate-800/80/80">
+                        <a href="{{ route('profile.edit') }}#two-factor" class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 group-hover:text-emerald-300">
+                            Configure 2FA &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Custom Module / Add Page Starter -->
+                <div class="group bg-slate-900/60 hover:bg-slate-900 border border-dashed border-emerald-500/40 hover:border-emerald-500 rounded-2xl p-5 backdrop-blur-sm transition-all flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500 text-slate-950/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-sm font-bold text-white">Your Custom Page</h3>
+                            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500 text-slate-950/20 text-emerald-300">Starter</span>
+                        </div>
+                        <p class="text-xs text-emerald-400/60 font-mono text-xs leading-relaxed">
+                            Plug in your custom models, CRUD tables, analytics charts, or admin panels.
+                        </p>
+                    </div>
+                    <div class="pt-4 mt-2 border-t border-slate-800/80/80">
+                        <a href="#quickstart-guide" class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 group-hover:text-emerald-300">
+                            View 3-Step Guide &darr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Application Options & Settings -->
+                <div class="group bg-slate-900/60 hover:bg-[#11181c] border border-emerald-500/20 hover:border-slate-700 rounded-2xl p-5 backdrop-blur-sm transition-all flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:scale-105 transition-transform">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-sm font-bold text-white">App Options</h3>
+                            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300">Extensible</span>
+                        </div>
+                        <p class="text-xs text-emerald-400/60 font-mono text-xs leading-relaxed">
+                            Ready for Sanctum API tokens, roles, permissions, team workspaces, and logs.
+                        </p>
+                    </div>
+                    <div class="pt-4 mt-2 border-t border-slate-800/80/80">
+                        <a href="{{ route('profile.edit') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-400 group-hover:text-purple-300">
+                            Account Settings &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quickstart Guide: How to Add New Pages -->
+        <div id="quickstart-guide" class="bg-[#11181c]/80 border border-emerald-500/20 rounded-2xl p-6 sm:p-8 backdrop-blur-sm space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-5">
+                <div>
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500 text-slate-950/10 text-emerald-400 border border-emerald-500/20 mb-2">
+                        Developer Blueprint
+                    </div>
+                    <h2 class="text-xl font-bold text-white">How to Add New Pages & Options in 3 Steps</h2>
+                    <p class="text-xs text-emerald-400/60 font-mono text-xs mt-1">This application uses the shared <code class="text-emerald-300 font-mono">&lt;x-app-layout&gt;</code> component. You can create custom pages in seconds:</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- Step 1 -->
+                <div class="p-4 rounded-xl bg-slate-950/70 border border-slate-800/80 space-y-2.5 flex flex-col justify-between">
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2 text-emerald-400 font-bold text-xs">
+                            <span class="w-5 h-5 rounded-full bg-emerald-600 text-slate-950/20 border border-emerald-500/30 flex items-center justify-center text-xs">1</span>
+                            <span>Define Route</span>
+                        </div>
+                        <p class="text-xs text-emerald-400/60 font-mono text-xs">Add an authenticated route in <code class="text-emerald-300 font-mono">routes/web.php</code>:</p>
+                    </div>
+                    <pre class="p-3 rounded-lg bg-[#11181c] border border-emerald-500/20 text-[11px] text-emerald-300/80 font-mono font-mono overflow-x-auto"><code>Route::get('/analytics', function () {
+    return view('analytics');
+})->middleware(['auth'])->name('analytics');</code></pre>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="p-4 rounded-xl bg-slate-950/70 border border-slate-800/80 space-y-2.5 flex flex-col justify-between">
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2 text-emerald-400 font-bold text-xs">
+                            <span class="w-5 h-5 rounded-full bg-emerald-600 text-slate-950/20 border border-emerald-500/30 flex items-center justify-center text-xs">2</span>
+                            <span>Create Blade View</span>
+                        </div>
+                        <p class="text-xs text-emerald-400/60 font-mono text-xs">Create <code class="text-emerald-300 font-mono">resources/views/analytics.blade.php</code>:</p>
+                    </div>
+                    <pre class="p-3 rounded-lg bg-[#11181c] border border-emerald-500/20 text-[11px] text-emerald-300/80 font-mono font-mono overflow-x-auto"><code>&lt;x-app-layout title="Analytics"&gt;
+    &lt;div class="max-w-7xl mx-auto py-8 px-4"&gt;
+        &lt;h1 class="text-2xl font-bold text-white"&gt;Analytics&lt;/h1&gt;
+        &lt;!-- Add your cards, tables, or charts --&gt;
+    &lt;/div&gt;
+&lt;/x-app-layout&gt;</code></pre>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="p-4 rounded-xl bg-slate-950/70 border border-slate-800/80 space-y-2.5 flex flex-col justify-between">
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2 text-emerald-400 font-bold text-xs">
+                            <span class="w-5 h-5 rounded-full bg-emerald-600 text-slate-950/20 border border-emerald-500/30 flex items-center justify-center text-xs">3</span>
+                            <span>Add Navigation Link</span>
+                        </div>
+                        <p class="text-xs text-emerald-400/60 font-mono text-xs">Add link to <code class="text-emerald-300 font-mono">resources/views/layouts/app.blade.php</code>:</p>
+                    </div>
+                    <pre class="p-3 rounded-lg bg-[#11181c] border border-emerald-500/20 text-[11px] text-emerald-300/80 font-mono font-mono overflow-x-auto"><code>&lt;a href="@{{ route('analytics') }}" 
+   class="px-3 py-1.5 rounded-lg text-emerald-400/60 font-mono text-xs hover:text-white"&gt;
+    Analytics
+&lt;/a&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Grid: Profile & Security Summary -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Profile Overview Card -->
+            <div class="md:col-span-2 bg-[#11181c]/80 border border-emerald-500/20 rounded-2xl p-6 backdrop-blur-sm shadow-md space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">
+                    <h2 class="text-base font-bold text-white flex items-center gap-2">
+                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        <span>User Account Details</span>
+                    </h2>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-slate-500 font-mono">ID: #{{ Auth::user()->id }}</span>
+                        <a href="{{ route('profile.edit') }}" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-600 text-slate-950/20 text-emerald-300 hover:bg-emerald-600 text-slate-950/30 hover:text-white border border-emerald-500/30 transition-all">
+                            Edit Profile &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-600/30">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                    </div>
+                    <div class="space-y-1">
+                        <div class="text-lg font-bold text-white">{{ Auth::user()->name }}</div>
+                        <div class="text-sm text-emerald-400/60 font-mono text-xs font-mono">{{ Auth::user()->email }}</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <div class="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80/80">
+                        <div class="text-xs text-slate-500 font-medium">Email Verification</div>
+                        <div class="mt-1 flex items-center gap-2">
+                            @if (Auth::user()->email_verified_at)
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Verified
+                                </span>
+                            @else
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                                    Unverified
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80/80">
+                        <div class="text-xs text-slate-500 font-medium">Member Since</div>
+                        <div class="mt-1 text-sm font-semibold text-slate-200">
+                            {{ Auth::user()->created_at ? Auth::user()->created_at->format('M d, Y') : 'Recently' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Summary -->
+            <div class="bg-[#11181c]/80 border border-emerald-500/20 rounded-2xl p-6 backdrop-blur-sm shadow-md space-y-5">
+                <div class="border-b border-slate-800/80 pb-4">
+                    <h2 class="text-base font-bold text-white flex items-center gap-2">
+                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                        <span>Security Summary</span>
+                    </h2>
+                </div>
+
+                <div class="space-y-3 text-xs">
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                        <span class="text-emerald-400/60 font-mono text-xs">Two-Factor Auth (2FA)</span>
+                        @if (! empty(Auth::user()->two_factor_confirmed_at))
+                            <span class="text-emerald-400 font-semibold">&check; Active</span>
+                        @else
+                            <a href="{{ route('profile.edit') }}#two-factor" class="text-amber-400 hover:text-amber-300 font-semibold underline underline-offset-2">
+                                Configure &rarr;
+                            </a>
+                        @endif
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                        <span class="text-emerald-400/60 font-mono text-xs">CSRF Protection</span>
+                        <span class="text-emerald-400 font-semibold">&check; Enabled</span>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                        <span class="text-emerald-400/60 font-mono text-xs">Session Guard</span>
+                        <span class="text-emerald-400 font-semibold">&check; Web (HTTP-Only)</span>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                        <span class="text-emerald-400/60 font-mono text-xs">Password Hashing</span>
+                        <span class="text-emerald-400 font-semibold">Bcrypt / Argon2</span>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full py-2.5 px-4 rounded-xl text-xs font-semibold bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/20 transition-all text-center cursor-pointer">
+                            End Current Session (Log Out)
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
