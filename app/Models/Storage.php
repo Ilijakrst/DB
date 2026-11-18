@@ -6,14 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Storage extends Model
 {
-    // ⚠️ Указываем имя таблицы как в БД
     protected $table = 'storage';
-    
-    // ⚠️ Указываем первичный ключ как в БД
     protected $primaryKey = 'IDstorage';
-
+    public $timestamps = false;
     protected $guarded = [];
 
-    // ⚠️ ВОТ ЭТА СТРОКА — отключает created_at/updated_at
-    public $timestamps = false;
+    // СВЯЗЬ 1: Запись на складе принадлежит конкретному комплектующему
+    public function product()
+    {
+        return $this->belongsTo(ProductsCatalog::class, 'IDpc', 'IDpc');
+    }
+
+    // СВЯЗЬ 2: Запись на складе находится в конкретной локации
+    public function location()
+    {
+        return $this->belongsTo(StorageLocation::class, 'lsName', 'lsName');
+    }
 }

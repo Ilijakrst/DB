@@ -1,32 +1,30 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MyPlaceController;
-use App\Http\Controllers\StorageController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\AboutController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StorageController;
+use App\Http\Controllers\TypeProductController;
+use App\Http\Controllers\StorageLocationController;
+use App\Http\Controllers\ProductsCatalogController;
+use App\Http\Controllers\ProjectsController;
 
-//Route::get('/', function() {
-//    return view('welcome');
-//});
+Route::get('/', function () {
+    return redirect()->route('dashboard');
+});
 
-Route::get('/huy', [MyPlaceController::class, 'index']);
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Наши разделы
+    Route::resource('storage', StorageController::class);
+    Route::resource('types', TypeProductController::class);
+    Route::resource('locations', StorageLocationController::class);
+    Route::resource('products', ProductsCatalogController::class);
+    Route::resource('projects', ProjectsController::class);
 
-Route::get('/huy1', [StorageController::class, 'index']);
-
-//Route::get('/create', [StorageController::class, 'create']);
-
-// Route::get('/update', [StorageController::class, 'update']);
-
-Route::get('/delete',[StorageController::class, 'delete']);
-
-Route::get('/v', [StorageController::class, 'index'])->name('storage.index');
-
-Route::get('/a', [AboutController::class, 'index'])->name('about.index');
-
-Route::get('/c', [ContactController::class, 'index'])->name('contact.index');
-
-Route::get('/d',[DashboardController::class, 'index']);
+    Route::resource('projects', ProjectsController::class);
+    Route::post('projects/{project}/add-item', [ProjectsController::class, 'addItem'])->name('projects.addItem');
+    Route::delete('projects/{project}/remove-item/{item}', [ProjectsController::class, 'removeItem'])->name('projects.removeItem');
+});
 
 require __DIR__.'/auth.php';

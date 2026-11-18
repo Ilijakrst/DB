@@ -38,28 +38,25 @@
 
                     <!-- Navigation Links (Easily add your custom pages here) -->
                     <div class="hidden md:flex items-center gap-1 text-sm font-medium">
-                        <a href="{{ url('/dashboard') }}" 
-                           class="px-3 py-1.5 rounded-lg transition-colors {{ request()->is('dashboard*') ? 'bg-emerald-600 text-slate-950/20 text-emerald-400 font-semibold' : 'text-emerald-400/60 font-mono text-xs hover:text-white hover:bg-slate-800/60' }}">
-                            Dashboard
+                        <a href="{{ url('/dashboard') }}" class="px-3 py-1.5 rounded-lg transition-colors {{ request()->is('dashboard*') ? 'bg-emerald-600/20 text-emerald-400 font-semibold' : 'text-emerald-400/60 hover:text-white hover:bg-slate-800/60' }}">
+                            Дашборд
                         </a>
-
-                        <a href="{{ route('profile.edit') }}" 
-                           class="px-3 py-1.5 rounded-lg transition-colors {{ request()->routeIs('profile.edit') ? 'bg-emerald-600 text-slate-950/20 text-emerald-400 font-semibold' : 'text-emerald-400/60 font-mono text-xs hover:text-white hover:bg-slate-800/60' }}">
-                            Profile
+                        <a href="{{ route('products.index') }}" class="px-3 py-1.5 rounded-lg transition-colors {{ request()->routeIs('products.*') ? 'bg-emerald-600/20 text-emerald-400 font-semibold' : 'text-emerald-400/60 hover:text-white hover:bg-slate-800/60' }}">
+                            Комплектующие
                         </a>
-
-                        <a href="{{ route('profile.edit') }}#two-factor" 
-                           class="px-3 py-1.5 rounded-lg transition-colors text-emerald-400/60 font-mono text-xs hover:text-white hover:bg-slate-800/60">
-                            2FA Security
+                        <a href="{{ route('types.index') }}" class="px-3 py-1.5 rounded-lg transition-colors {{ request()->routeIs('types.*') ? 'bg-emerald-600/20 text-emerald-400 font-semibold' : 'text-emerald-400/60 hover:text-white hover:bg-slate-800/60' }}">
+                            Категории
                         </a>
-
-                        {{-- ========================================================= --}}
-                        {{-- [ADD CUSTOM PAGES HERE] --}}
-                        {{-- Example: --}}
-                        {{-- <a href="{{ url('/analytics') }}" class="px-3 py-1.5 rounded-lg transition-colors ...">Analytics</a> --}}
-                        {{-- ========================================================= --}}
+                        <a href="{{ route('storage.index') }}" class="px-3 py-1.5 rounded-lg transition-colors {{ request()->routeIs('storage.*') ? 'bg-emerald-600/20 text-emerald-400 font-semibold' : 'text-emerald-400/60 hover:text-white hover:bg-slate-800/60' }}">
+                            Склад
+                        </a>
+                        <a href="{{ route('locations.index') }}" class="px-3 py-1.5 rounded-lg transition-colors {{ request()->routeIs('locations.*') ? 'bg-emerald-600/20 text-emerald-400 font-semibold' : 'text-emerald-400/60 hover:text-white hover:bg-slate-800/60' }}">
+                            Локации
+                        </a>
+                        <a href="{{ route('projects.index') }}" class="px-3 py-1.5 rounded-lg transition-colors {{ request()->routeIs('projects.*') ? 'bg-emerald-600/20 text-emerald-400 font-semibold' : 'text-emerald-400/60 hover:text-white hover:bg-slate-800/60' }}">
+                            Проекты
+                        </a>
                     </div>
-                </div>
 
                 <!-- Right Header Actions (User info + Logout) -->
                 <div class="flex items-center gap-3">
